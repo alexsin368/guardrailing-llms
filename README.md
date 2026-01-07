@@ -45,14 +45,14 @@ This quickstart includes a Helm chart for deploying:
 
 ### Recommended hardware requirements 
 
-- GPU required for main LLM: +24GiB vRAM
+- GPU or Intel® Gaudi® AI Accelerator with +24GiB vRAM for main LLM
 - CPU cores: 12+ cores total (4 for LLM + 8 for detectors)
 - Memory: 24Gi+ RAM total
 - Storage: 10Gi
 
 ### Minimum hardware requirements 
 
-- GPU required for main LLM: 1 x NVIDIA GPU with 24GiB vRAM
+- NVIDIA GPU or Intel® Gaudi® AI Accelerator with 24GiB vRAM required for main LLM
 - CPU cores: 8+ cores total
 - Memory: 16Gi+ RAM total
 - Storage: 5Gi 
@@ -91,7 +91,8 @@ oc new-project ${PROJECT}
 ### Install with Helm
 
 ```bash
-helm install ${PROJECT} helm/ --namespace ${PROJECT} 
+export DEVICE="gpu" # options: [gpu, hpu]
+helm install ${PROJECT} helm/ --namespace ${PROJECT} --set device=$DEVICE
 ```
 
 ### Wait for the pods to be ready

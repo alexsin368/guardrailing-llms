@@ -4,53 +4,34 @@ kind: ServingRuntime
 metadata:
   annotations:
     opendatahub.io/apiProtocol: REST
-    opendatahub.io/recommended-accelerators: '["nvidia.com/gpu"]'
+    opendatahub.io/recommended-accelerators: '{{ index .Values.annotations .Values.device "detectorsRecommendedAccelerators" | toJson }}'
     opendatahub.io/template-display-name: vLLM ServingRuntime for KServe
     opendatahub.io/template-name: vllm-runtime
-    openshift.io/display-name: {{ .Values.mainLLM.name }}
-  name: {{ .Values.mainLLM.name }}
-  namespace: {{ .Release.Namespace }}
+    openshift.io/display-name: "{{ index .Values.mainLLM .Values.device "name" }}"
+  name: "{{ index .Values.mainLLM .Values.device "name" }}"
+  namespace: "{{ .Release.Namespace }}"
   labels:
-    opendatahub.io/dashboard: 'true'
+    opendatahub.io/dashboard: "true"
 spec:
   annotations:
     prometheus.io/path: /metrics
-    prometheus.io/port: '8080'
+    prometheus.io/port: "8080"
   containers:
     - args:
-        - '--port=8080'
-        - '--model=/mnt/models'
-        - '--served-model-name={{`{{.Name}}`}}'
-        {{- if .Values.mainLLM.enableAutoToolChoice }}
-        - '--enable-auto-tool-choice'
+        {{- range .Values.servingRuntimeLlm.common.args }}
+        - {{ . | quote }}
         {{- end }}
-        {{- if .Values.mainLLM.enableChunkedPrefill }}
-        - '--enable-chunked-prefill'
-        {{- end }}
-        {{- if .Values.mainLLM.toolCallParser }}
-        - '--tool-call-parser'
-        - {{ .Values.mainLLM.toolCallParser }}
-        {{- end }}
-        {{- if .Values.mainLLM.chatTemplate }}
-        - '--chat-template'
-        - {{ .Values.mainLLM.chatTemplate }}
-        {{- end }}
-        {{- if .Values.mainLLM.maxModelLen }}
-        - '--max-model-len'
-        - {{ .Values.mainLLM.maxModelLen | quote }}
-        {{- end }}
-        {{- if .Values.mainLLM.maxNumSeqs }}
-        - '--max-num-seqs'
-        - {{ .Values.mainLLM.maxNumSeqs | quote }}
+        {{- range index .Values.servingRuntimeLlm .Values.device "args" }}
+        - {{ . | quote }}
         {{- end }}
       command:
         - python
-        - '-m'
+        - "-m"
         - vllm.entrypoints.openai.api_server
       env:
         - name: HF_HOME
           value: /tmp/hf_home
-      image: {{ .Values.mainLLM.image | default "quay.io/modh/vllm@sha256:0d55419f3d168fd80868a36ac89815dded9e063937a8409b7edf3529771383f3" }}
+      image: "{{ index .Values.mainLLM .Values.device "image" }}"
       name: kserve-container
       ports:
         - containerPort: 8080
@@ -62,9 +43,9 @@ spec:
   supportedModelFormats:
     - autoSelect: true
       name: vLLM
-  {{- if .Values.mainLLM.tolerations }}
+  {{- with index .Values.mainLLM .Values.device "tolerations" }}
   tolerations:
-    {{- toYaml .Values.mainLLM.tolerations | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
   volumes:
     - emptyDir:
