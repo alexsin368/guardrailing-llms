@@ -73,11 +73,11 @@ servingRuntimeLlm:
       - --model=/mnt/models
       - --served-model-name=llama3-2-3b-instruct
       - --enable-auto-tool-choice
-      - --enable-chunked-prefill
       - --tool-call-parser=llama3_json
       - --chat-template=/app/data/template/tool_chat_template_llama3.2_json.jinja
   gpu:
     args:
+      - --enable-chunked-prefill
       - --max-model-len=32768
       - --max-num-seqs=8
   hpu:
@@ -106,7 +106,7 @@ mainLLM:
         effect: NoSchedule
   hpu:
     name: llama-32-3b-instruct-hpu
-    image: "quay.io/modh/vllm:vllm-gaudi-v2-25-on-push-n7985-build-images"
+    image: "quay.io/modh/vllm:rhoai-2.25-gaudi"
     tolerations:
       - key: habana.ai/gaudi
         operator: Equal
