@@ -46,7 +46,7 @@ This quickstart includes a Helm chart for deploying:
 ### Recommended hardware requirements 
 
 - GPU or Intel® Gaudi® AI Accelerator with +24GiB vRAM for main LLM
-- CPU cores: 12+ cores total (4 for LLM + 8 for detectors)
+- CPU cores: 12+ cores total (4 for LLM + 8 for detectors) with 4th Gen Xeon® Scalable® processors or newer
 - Memory: 24Gi+ RAM total
 - Storage: 10Gi
 
@@ -91,7 +91,7 @@ oc new-project ${PROJECT}
 ### Install with Helm
 
 ```bash
-export DEVICE="gpu" # options: [gpu, hpu]
+export DEVICE="gpu" # options: [gpu, cpu, hpu]
 helm install ${PROJECT} helm/ --namespace ${PROJECT} --set device=$DEVICE
 ```
 
