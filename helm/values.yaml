@@ -186,7 +186,9 @@ orchestrator:
 workbench:
   enabled: true
   name: guardrails-workbench
-  image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2025.1
+  image: registry.redhat.io/rhoai/odh-workbench-jupyter-datascience-cpu-py312-rhel9@sha256:ff99560a0573793ef87ce58ab9a1fe8a73339953b266c0cb9a390a2e90176e7b
+  annotations:
+    imageDisplayName: Jupyter | Data Science | CPU | Python 3.12
   resources:
     requests:
       cpu: "1"
