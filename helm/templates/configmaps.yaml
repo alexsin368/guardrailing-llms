@@ -6,9 +6,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   config.yaml: |
-    chat_generation: 
+    openai:
       service:
-        hostname: {{ .Values.mainLLM.name }}-predictor.{{ .Release.Namespace }}.svc.cluster.local
+        hostname: {{ index .Values.mainLLM .Values.device "name" }}-predictor.{{ .Release.Namespace }}.svc.cluster.local
         port: {{ .Values.mainLLM.port }}
     detectors:
       regex:
