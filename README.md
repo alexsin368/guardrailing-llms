@@ -45,14 +45,14 @@ This quickstart includes a Helm chart for deploying:
 
 ### Recommended hardware requirements 
 
-- GPU or Intel® Gaudi® AI Accelerator with +24GiB vRAM for main LLM
+- GPU with +24GiB vRAM for main LLM
 - CPU cores: 12+ cores total (4 for LLM + 8 for detectors) with 4th Gen Xeon® Scalable® processors or newer
 - Memory: 24Gi+ RAM total
 - Storage: 10Gi
 
 ### Minimum hardware requirements 
 
-- NVIDIA GPU or Intel® Gaudi® AI Accelerator with 24GiB vRAM required for main LLM
+- NVIDIA GPU with 24GiB vRAM required for main LLM
 - CPU cores: 8+ cores total
 - Memory: 16Gi+ RAM total
 - Storage: 5Gi 
@@ -61,12 +61,12 @@ This quickstart includes a Helm chart for deploying:
 
 - Red Hat OpenShift 4.19.9
 - Red Hat OpenShift Service Mesh 2
-- Red Hat OpenShift AI 2.23.0
+- Red Hat OpenShift AI 2.23.0 on GPU, 3.4.0 on CPU
     - KServe needs to be enabled
 
 **Please note before you start**
 
-This example was tested on Red Hat OpenShift 4.19.9 & Red Hat OpenShift AI 2.23.0.
+This example was tested on Red Hat OpenShift 4.19.9 & Red Hat OpenShift AI 2.23.0 for GPU, 3.4.0 on CPU.
 
 ### Required user permissions
 
@@ -91,7 +91,7 @@ oc new-project ${PROJECT}
 ### Install with Helm
 
 ```bash
-export DEVICE="gpu" # options: [gpu, cpu, hpu]
+export DEVICE="gpu" # options: [gpu, cpu]
 helm install ${PROJECT} helm/ --namespace ${PROJECT} --set device=$DEVICE
 ```
 
