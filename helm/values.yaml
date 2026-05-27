@@ -128,7 +128,7 @@ orchestrator:
 workbench:
   enabled: true
   name: guardrails-workbench
-  image: registry.redhat.io/rhoai/odh-workbench-jupyter-datascience-cpu-py312-rhel9:v2.25
+  image: registry.redhat.io/rhoai/odh-workbench-jupyter-datascience-cpu-py312-rhel9:v3.4.0
   annotations:
     imageDisplayName: Jupyter | Data Science | CPU | Python 3.12
   resources:

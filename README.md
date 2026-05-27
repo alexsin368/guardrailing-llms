@@ -59,14 +59,10 @@ This quickstart includes a Helm chart for deploying:
 
 ### Minimum software requirements
 
-- Red Hat OpenShift 4.19.9
-- Red Hat OpenShift Service Mesh 2
-- Red Hat OpenShift AI 2.23.0 on GPU, 3.4.0 on CPU
+- Red Hat OpenShift 4.19+
+- Red Hat OpenShift Service Mesh 3+
+- Red Hat OpenShift AI 3.4.0+
     - KServe needs to be enabled
-
-**Please note before you start**
-
-This example was tested on Red Hat OpenShift 4.19.9 & Red Hat OpenShift AI 2.23.0 for GPU, 3.4.0 on CPU.
 
 ### Required user permissions
 
