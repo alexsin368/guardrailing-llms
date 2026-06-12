@@ -90,7 +90,7 @@ mainLLM:
   storageUri: "oci://quay.io/redhat-ai-services/modelcar-catalog:llama-3.2-3b-instruct"
   port: 8080
   gpu:
-    name: llama-32-3b-instruct
+    name: llama-3-2-3b-instruct
     image: "quay.io/modh/vllm@sha256:db766445a1e3455e1bf7d16b008f8946fcbe9f277377af7abb81ae358805e7e2"
     tolerations:
       - key: nvidia.com/gpu
@@ -98,8 +98,12 @@ mainLLM:
         value: "True"
         effect: NoSchedule
   cpu:
-    name: llama-32-3b-instruct-cpu
-    image: "quay.io/vllm/automation-vllm:0.18.0_rhaiv.5.cpu"
+    name: llama-3-2-3b-instruct-cpu
+    env:
+      # jemalloc memory allocator not supported on this image, using libomp instead
+      - name: LD_PRELOAD
+        value: "/usr/lib64/libomp.so"
+    image: "registry.redhat.io/rhaii/vllm-cpu-rhel9:3.4.0"
     tolerations: []
 
 # Detectors

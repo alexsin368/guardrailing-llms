@@ -28,14 +28,6 @@ This quickstart includes a Helm chart for deploying:
 - TrustyAI GuardrailsOrchestrator for coordinating safety checks.
 - Configurable detection thresholds and routing policies.
 
-
-
-<!-- ## Arcade demo -->
-
-<!-- Short on time or don't have an environment? No problem! Try our step-by-step Arcade Demo for a guided walkthrough. -->
-
-<!-- *Coming soon* -->
-
 ### Architecture diagrams
 
 ![architecture.png](docs/images/architecture.png)
@@ -63,6 +55,7 @@ This quickstart includes a Helm chart for deploying:
 - Red Hat OpenShift Service Mesh 3+
 - Red Hat OpenShift AI 3.4.0+
     - KServe needs to be enabled
+    - TrustyAI operator needs to be enabled (`GuardrailsOrchestrator` CRD is provided)
 
 ### Required user permissions
 
@@ -83,6 +76,24 @@ PROJECT="guardrails-demo"
 
 oc new-project ${PROJECT}
 ``` 
+
+### Enable the TrustyAI operator
+
+The Helm chart deploys a `GuardrailsOrchestrator` custom resource, which requires the TrustyAI operator CRD to be registered in the cluster. The CRD is bundled in `helm/crds/` and Helm will install it automatically, but the TrustyAI operator itself must be running to reconcile the resource.
+
+Enable TrustyAI in the OpenShift AI DataScienceCluster before installing:
+
+```bash
+oc patch datasciencecluster default-dsc --type=merge \
+  -p '{"spec":{"components":{"trustyai":{"managementState":"Managed"}}}}'
+```
+
+Wait for the operator to be ready:
+
+```bash
+oc wait --for=condition=Available deployment/trustyai-service-operator-controller-manager \
+  -n redhat-ods-applications --timeout=300s
+```
 
 ### Install with Helm
 

@@ -32,7 +32,11 @@ spec:
         - name: HF_HOME
           value: /tmp/hf_home
         - name: MODEL
-          value: "{{ .Values.mainLLM.model }}"
+          value: {{ index .Values.mainLLM .Values.device "name" | quote }}
+        {{- range index .Values.mainLLM .Values.device "env" }}
+        - name: {{ .name }}
+          value: {{ .value | quote }}
+        {{- end }}
       image: "{{ index .Values.mainLLM .Values.device "image" }}"
       name: kserve-container
       ports:
